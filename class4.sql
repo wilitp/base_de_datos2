@@ -1,4 +1,3 @@
-USE sakila;
 
 SELECT title, special_features 
 	FROM film f 
@@ -11,7 +10,9 @@ SELECT DISTINCT `length`
 SELECT title, rental_rate, replacement_cost 
 	FROM film WHERE replacement_cost BETWEEN 20.00 AND 24.00
 	
-#SELECT category FROM film f;
+SELECT f.title, c2.name, f.rating FROM film f, category c2, film_category fc 
+	WHERE f.film_id = fc.film_id
+		AND c2.category_id = fc.category_id AND f.special_features = "Behind the Scenes"
 	
 SELECT first_name, last_name FROM actor a, film_actor fa , film f 
 	WHERE a.actor_id = fa.actor_id 
@@ -24,7 +25,8 @@ SELECT a.address, c2.country, c.city FROM store s, address a, city c, country c2
 	AND c.city_id = a.city_id
 	AND c2.country_id = c.country_id;
 	
-#select
+SELECT f.title, f2.title, f.rating FROM film f, film f2 
+	WHERE f.rating = f2.rating AND f.film_id <> f2.film_id 
 
 SELECT f.title, s.first_name FROM inventory i ,film f ,staff s, store s2 
 	WHERE s2.manager_staff_id = s.staff_id 

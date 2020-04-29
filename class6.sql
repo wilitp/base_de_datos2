@@ -1,8 +1,10 @@
 #1
 SELECT * FROM actor a WHERE EXISTS (
-	SELECT * FROM actor a2 WHERE a.last_name = a2.last_name
+	SELECT * FROM actor a2 WHERE a.last_name = a2.last_name AND a.actor_id <> a2.actor_id
 ) ORDER  BY a.last_name
 
+
+select * from actor a ;
 
 #2
 SELECT * FROM actor a WHERE NOT EXISTS (
@@ -20,7 +22,7 @@ SELECT * FROM customer c
     WHERE (SELECT COUNT(*) FROM rental r2, customer c2 WHERE r2.customer_id = c2.customer_id) > 1
 
 #5
-SELECT * FROM actor a, film_actor fa , film f WHERE a.actor_id=fa.actor_id
+SELECT DISTINCT a.first_name FROM actor a, film_actor fa , film f WHERE a.actor_id=fa.actor_id
 	AND f.film_id = fa.film_id AND (f.title = "BETRAYED REAR" OR f.title = "CATCH AMISTAD");
 
 	
@@ -41,5 +43,5 @@ SELECT * FROM actor a, film_actor fa , film f WHERE a.actor_id=fa.actor_id
 
 #8
 SELECT * FROM actor a, film_actor fa , film f WHERE a.actor_id=fa.actor_id
-	AND f.film_id = fa.film_id AND (f.title != "BETRAYED REAR" OR f.title != "CATCH AMISTAD");
+	AND f.film_id = fa.film_id AND (f.title <> "BETRAYED REAR" OR f.title <> "CATCH AMISTAD");
 	
