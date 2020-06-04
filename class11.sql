@@ -11,6 +11,7 @@ WHERE
 	FROM
 		inventory i3 );
 --- Forma de hacerlo con join
+
 SELECT * FROM film f LEFT OUTER JOIN inventory i ON f.film_id = i.film_id where inventory_id IS NULL;
 
 # Find all the films that are in the inventory but were never rented
