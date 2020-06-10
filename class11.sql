@@ -50,7 +50,7 @@ ORDER BY last_name, "store id";
 -- show store's city, country, manager info and total sales
 -- Use concat to show the city and country and the manager's name and last name
 
-SELECT COUNT(amount), store.store_id, CONCAT(city, ", ", country), CONCAT(first_name," ", last_name)
+SELECT SUM(amount) as "Total sales", store.store_id, CONCAT(city, ", ", country), CONCAT(first_name," ", last_name)
 FROM
 	payment
 INNER JOIN
@@ -69,7 +69,6 @@ GROUP BY store_id;
 
 
 
-
 # Which is the actor who acted in the most films?
 
 SELECT 
@@ -83,11 +82,9 @@ FROM
 	where
 		a.actor_id = fa.actor_id
 	GROUP BY
-		actor
+		fa.actor_id
 	order by
 		amount_featured desc
 	limit 1) as a
-
-
 
 

@@ -1,6 +1,5 @@
-
 # Find the films with less duration, show the title and rating.
- SELECT
+SELECT
 	title,
 	rating
 FROM
@@ -38,47 +37,27 @@ where
 #Generate a report with list of customers showing the lowest payments done by each of them. 
 #Show customer information, the address and the lowest amount, provide both solution using ALL and/or ANY and MIN.
 
-#Perdón si esto te parece muy feo
- SELECT
-	first_name,
-	address,
-	(
-	SELECT
-		payment p2
-	WHERE
-		p2.customer_id = c.customer_id ) as minimo_pago
-FROM
-	customer c,
-	address a
-WHERE
-	c.address_id = a.address_id
-order by
-	minimo_pago;
-
----Como creo que le gustaría al alexis
+-- Como creo que le gustaría al alexis
 SELECT
 	DISTINCT c.customer_id,
 	c.first_name,
 	c.last_name,
 	a.address,
-	p.amount AS 'min_amount'
-FROM
-	customer c,
-	address a,
-	payment p
-WHERE
-	c.address_id = a.address_id
-	AND p.customer_id = c.customer_id
-	AND p.amount IN (
+	(
 	SELECT
 		MIN(p2.amount)
 	FROM
-		payment p2WHERE p2.customer_id = c.customer_id)
+		payment p2 
+	WHERE p2.customer_id = c.customer_id) AS 'min_amount'
+FROM
+	customer c,
+	address a
+WHERE
+	c.address_id = a.address_id
 ORDER BY
 	min_amount;
 
-SELECT
-	DISTINCT c.customer_id,
+SELECT DISTINCT
 	c.first_name,
 	c.last_name,
 	a.address,
