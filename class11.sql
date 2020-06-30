@@ -85,6 +85,29 @@ FROM
 		fa.actor_id
 	order by
 		amount_featured desc
-	limit 1) as a
+	limit 1) as a;
+
+-- Otra solución
+
+SELECT
+	CONCAT(first_name, " ", a.last_name) 
+FROM
+	actor a
+WHERE
+	actor_id = (
+	SELECT
+		actor_id	
+	FROM
+		(
+		SELECT
+			actor_id ,COUNT(actor_id) as instance_amount
+		FROM
+			film_actor fa
+		GROUP BY actor_id
+		ORDER BY instance_amount DESC 
+		limit 1
+		) a
+	);
+
 
 

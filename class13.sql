@@ -64,92 +64,99 @@ where rating = "R";
 
 # 4
 -- Return any film that hasn't been returned yet
-#UPDATE rental set
-#	return_date = CURRENT_TIMESTAMP	
-#WHERE rental_id = (SELECT r.rental_id FROM rental r WHERE r.return_date IS NULL limit 1);
--- No se puede usar la tabla que se está actualizando xd
-
-# 5 
+ UPDATE
+	rental
+SET
+	return_date = CURRENT_TIMESTAMP
+WHERE
+	rental_id = (
+	SELECT
+		*
+	FROM
+		(
+		SELECT
+			r.rental_id
+		FROM
+			rental r
+		WHERE
+			r.return_date IS NULL
+		LIMIT 1) rental);
+# 5
 -- Delete a film(related rows aren't set up to be deleted so you'll have to do that before)
 -- To delete a film you need to delete all related rows and rows related to the latter
 DELETE
 FROM
 	film_actor
-WHERE 
+WHERE
 	film_id = 3;
 --
-DELETE 
+DELETE
 FROM
 	film_category
 WHERE
 	film_id = 3;
 -- 
-
 DELETE
 FROM
 	payment
 WHERE
-	rental_id in (
+	rental_id IN (
 	SELECT
 		rental_id
 	FROM
 		rental
 	JOIN inventory
-			using(inventory_id)
+			USING(inventory_id)
 	WHERE
 		film_id = 3 );
-
 --
 DELETE
 FROM
 	rental
 WHERE
-	inventory_id in (
-	SELECT 
-		inventory_id 
+	inventory_id IN (
+	SELECT
+		inventory_id
 	FROM
 		inventory
-	WHERE film_id = 3
-		);
-	
+	WHERE
+		film_id = 3 );
 --
-
 DELETE
 FROM
 	inventory
 WHERE
 	film_id = 3;
-
-DELETE FROM film
-WHERE film_id = 3;
+DELETE
+FROM
+	film
+WHERE
+	film_id = 3;
 
 # 6
 -- Rent a film. Find one that is in stock and insert a rental and a payment.
-
-SET @someAvailableId =(SELECT
+ SET
+@someAvailableId =(
+SELECT
 	inventory_id
-from
+FROM
 	inventory
-where
-	inventory_id not in (
-	select
+WHERE
+	inventory_id NOT IN (
+	SELECT
 		inventory_id
-	from
+	FROM
 		rental
-	where
-		return_date is not null) limit 1);
+	WHERE
+		return_date IS NOT NULL)
+LIMIT 1);
 
-
-INSERT INTO rental
-(rental_id, inventory_id, customer_id, return_date, staff_id, last_update)
-VALUES(23452,@someAvailableId, 4, NULL, 1, CURRENT_TIMESTAMP);
-
-INSERT INTO payment
-(customer_id, staff_id, rental_id, amount, last_update)
-VALUES(4, 1, 23452, 24,  CURRENT_TIMESTAMP);
-
-
-
-
-
-
+INSERT
+	INTO
+		rental (rental_id, inventory_id, customer_id, return_date, staff_id, last_update)
+	VALUES(23452, @someAvailableId, 4, NULL, 1, CURRENT_TIMESTAMP);
+INSERT
+	INTO
+		payment (customer_id, staff_id, rental_id, amount, last_update)
+	VALUES(4, 1, 23452, 24, CURRENT_TIMESTAMP);
+	
