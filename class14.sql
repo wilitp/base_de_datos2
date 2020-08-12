@@ -64,7 +64,7 @@ join inventory
 join film
 	using(film_id)
 where
-	month(return_date) > 3 and month(return_date) < 6;
+	MONTHNAME(return_date) in ("may", "JUNE")
 	
 
 # 5
@@ -73,5 +73,5 @@ where
 -- The difference between CAST and CONVERT is that CONVERT accepts an optional arguent used for formatting. 
 -- CAST is part of the ansi-sql specification and CONVERT is not. 
 
-select * from payment where cast(amount as CHARACTER ) = "2.99";
+select * from payment where cast(amount as CHARACTER ) = '2.99';
 
