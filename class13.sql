@@ -1,5 +1,6 @@
 # 1
 -- Add a customer to the store 1 and with the US address with the highest id
+
 INSERT
 	INTO
 	customer (store_id, first_name, last_name, email, address_id, active , last_update)
